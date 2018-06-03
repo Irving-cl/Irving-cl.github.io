@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
 
   
@@ -27,11 +27,11 @@
   
     <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body>
-  <div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
       <header id="header">
   <div id="banner"></div>
@@ -66,10 +66,57 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-cf-894B" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/06/03/hello-world/" class="article-date">
-  <time datetime="2018-06-03T01:50:38.000Z" itemprop="datePublished">2018-06-03</time>
+    <a href="/2017/11/25/cf-894B/" class="article-date">
+  <time datetime="2017-11-25T08:49:59.000Z" itemprop="datePublished">2017-11-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Well, I didn’t solve it myself though it’s only B problem in Div2…<br>Fine, this sometimes happens, never mind.<br>Just practice more.  </p>
+<p>The problem is, how many different ways can we put integers in a <em>n \</em> m* block so that the products of each row and each column is 1 or -1. </p>
+<p>Let’s see how to solve it.<br>We can easily figure out that only 1 or -1 can be put into the block.<br>Further, another important conclusion is that <strong>when k is -1, the answer is 0 if n and m have different parity</strong>.<br>Why is that?<br>This is not obvious for me.<br>If we have <code>n</code> be odd and <code>m</code> be even,<br>then we have an even number of -1 in total since we have an even number of columns.<br>However, we have an odd number of rows, and in each row there exists an odd number of -1.<br>So the total number of -1 cannot be even.<br>That’s impossible.<br>For the rest cases, we consider the (n-1)*(m-1) subblock.<br>We can fill either 1 or -1 into any cell.<br>And then the rest cells are determined.<br>The answer is:<br>$$<br>2^{(n-1)+(m-1)}<br>$$</p>
+<p>With quick power, we can solve it easily.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line">ll n,m,k;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">qp</span><span class="params">(ll temp,ll x)</span> </span>&#123;</span><br><span class="line">    ll ret=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (x&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (x&amp;<span class="number">1</span>) ret=(ret*temp)%MOD;</span><br><span class="line">        temp=(temp*temp)%MOD;</span><br><span class="line">        x&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lld%lld%lld"</span>,&amp;n,&amp;m,&amp;k);</span><br><span class="line">    <span class="keyword">if</span> (k==<span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((n%<span class="number">2</span>)+(m%<span class="number">2</span>)==<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"0\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ll ans=qp(qp(<span class="number">2</span>,n<span class="number">-1</span>),m<span class="number">-1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,ans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>I’m recently studying using <strong>ocaml</strong>, which is a functional language.<br>So let’s rewrite the solution with <strong>ocaml</strong>.<br><figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="type">Scanf</span></span><br><span class="line"><span class="keyword">open</span> <span class="type">Printf</span></span><br><span class="line"><span class="keyword">open</span> <span class="type">Int64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> md = <span class="number">1000000007L</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f n m k =</span><br><span class="line">  <span class="keyword">if</span> k = -<span class="number">1L</span> &amp;&amp; <span class="type">Int64</span>.rem (<span class="type">Int64</span>.add m n) <span class="number">2L</span> = <span class="number">1L</span> <span class="keyword">then</span> <span class="number">0L</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">let</span> <span class="keyword">rec</span> g x y =</span><br><span class="line">      <span class="keyword">if</span> y = <span class="number">0L</span> <span class="keyword">then</span> <span class="number">1L</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> y = <span class="number">1L</span> <span class="keyword">then</span> x</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">let</span> tmp = g x (<span class="type">Int64</span>.div y <span class="number">2L</span>) <span class="keyword">in</span></span><br><span class="line">          <span class="keyword">if</span> <span class="type">Int64</span>.rem y <span class="number">2L</span> = <span class="number">0L</span> <span class="keyword">then</span> <span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul tmp tmp) md </span><br><span class="line">          <span class="keyword">else</span> <span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul (<span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul tmp tmp) md) x) md <span class="keyword">in</span></span><br><span class="line">    g (g <span class="number">2L</span> (<span class="type">Int64</span>.sub n <span class="number">1L</span>)) (<span class="type">Int64</span>.sub m <span class="number">1L</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="literal">()</span> =</span><br><span class="line">  <span class="keyword">let</span> ans = bscanf <span class="type">Scanning</span>.stdin <span class="string">"%Ld %Ld %Ld"</span> f <span class="keyword">in</span></span><br><span class="line">    printf <span class="string">"%Ld\n"</span> ans</span><br></pre></td></tr></table></figure><br>Though it may be very difficult to use it in a contest temporarily,<br>I have a great interest in this language.<br>The problem: <a href="http://codeforces.com/problemset/problem/894/B" target="_blank" rel="noopener">Codeforces 894B Ralph And His Magic Field</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjhydoqqr0004gejils2t0epe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-notes-on-muduo-timer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/07/notes-on-muduo-timer/" class="article-date">
+  <time datetime="2017-11-07T03:41:55.000Z" itemprop="datePublished">2017-11-07</time>
 </a>
     
   </div>
@@ -80,7 +127,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/03/hello-world/">Hello World</a>
+      <a class="article-title" href="/2017/11/07/notes-on-muduo-timer/">Notes on Muduo Timer</a>
     </h1>
   
 
@@ -88,22 +135,192 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>Recently I am studying <a href="https://github.com/chenshuo/muduo" target="_blank" rel="noopener">Muduo</a>, a net library written by ChenShuo.<br>And I think the timer system of it is worth learning, so I did some notes on it in this article.</p>
+<h2 id="What-is-a-timer"><a href="#What-is-a-timer" class="headerlink" title="What is a timer?"></a>What is a timer?</h2><p><em>A timer allows us to do something at a specific time later.</em><br>This is not quoted from someone’s words. This is just my own understanding.<br>Say, now we want to run a function, instead of running it immediately, we want to run it after 2 seconds. And a timer enables us to do something like that.</p>
+<h2 id="How-do-we-use-timer-in-Muduo"><a href="#How-do-we-use-timer-in-Muduo" class="headerlink" title="How do we use timer in Muduo?"></a>How do we use timer in Muduo?</h2><p>At the very beginning, we have to know a very important idea about Muduo: <strong>One loop per thread</strong>, which is also emphasized by the author.<br>The core class of Muduo is <code>EventLoop</code>.<br>Each <code>EventLoop</code> is bind to a thread and will loop forever to run the thread until we call the <code>quit()</code> method of it.<br>Every thing runs in one of the EventLoops in Muduo.<br>So, if we want to run a function in 2 seconds, we run the function in one of the EventLoops. Apparently, we run our functions in some thread.<br>Muduo provides us with three methods to add a timer and one to cancel a timer:<br><figure class="highlight cpp"><figcaption><span>interfaces</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback at 'time'.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runAt</span><span class="params">(<span class="keyword">const</span> Timestamp&amp; time, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback after @c delay seconds.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runAfter</span><span class="params">(<span class="keyword">double</span> delay, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback every @c interval seconds.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runEvery</span><span class="params">(<span class="keyword">double</span> interval, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Cancels the timer.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cancel</span><span class="params">(TimerId timerId)</span></span>;</span><br></pre></td></tr></table></figure><br>It would be unnessary to explain what does every above method do. However, I should still explain something else:</p>
+<ul>
+<li>A <code>Timer</code> is actually an expiration time with a callback function. The callback function would be called when it expired. </li>
+<li>A <code>TimerId</code> is an identification of a timer so that we can cancel a timer.</li>
+<li><code>Timestamp</code> is actually micro seconds since epoch.</li>
+<li><code>TimerCallback</code> is a function object, which we want to run in the future.</li>
+</ul>
+<h2 id="How-does-these-timer-function-work"><a href="#How-does-these-timer-function-work" class="headerlink" title="How does these timer function work?"></a>How does these timer function work?</h2><p>Now we come to the critical and interesting part, let’s try to figure out how our functions are called when their time expired.<br>In this section, we will take a look at the whole process, from the moment a timer was added to the moment its callback was called.<br>Firstly, I need to introduce the core class of the timer system: <code>TimerQueue</code>.<br>It is invisible to the clients.<br>The private members of it is as follow:<br><figure class="highlight cpp"><figcaption><span>members</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// <span class="doctag">FIXME:</span> use unique_ptr&lt;Timer&gt; instead of raw pointers.</span></span><br><span class="line"><span class="comment">// This requires heterogeneous comparison lookup (N3465) from C++14</span></span><br><span class="line"><span class="comment">// so that we can find an T* in a set&lt;unique_ptr&lt;T&gt;&gt;.</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::pair&lt;Timestamp, Timer*&gt; Entry;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">set</span>&lt;Entry&gt; TimerList;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::pair&lt;Timer*, <span class="keyword">int64_t</span>&gt; ActiveTimer;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">set</span>&lt;ActiveTimer&gt; ActiveTimerSet;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addTimerInLoop</span><span class="params">(Timer* timer)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cancelInLoop</span><span class="params">(TimerId timerId)</span></span>;</span><br><span class="line"><span class="comment">// called when timerfd alarms</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handleRead</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// move out all expired timers</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Entry&gt; getExpired(Timestamp now);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Entry&gt;&amp; expired, Timestamp now)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">insert</span><span class="params">(Timer* timer)</span></span>;</span><br><span class="line"></span><br><span class="line">EventLoop* loop_;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> timerfd_;</span><br><span class="line">Channel timerfdChannel_;</span><br><span class="line"><span class="comment">// Timer list sorted by expiration</span></span><br><span class="line">TimerList timers_;</span><br><span class="line"></span><br><span class="line"><span class="comment">// for cancel()</span></span><br><span class="line">ActiveTimerSet activeTimers_;</span><br><span class="line"><span class="keyword">bool</span> callingExpiredTimers_; <span class="comment">/* atomic */</span></span><br><span class="line">ActiveTimerSet cancelingTimers_;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>I am not going to elaborate every member here.<br>I put the code here because I may refer to some of these members later.<br>Now we see the whole process.<br>Actually, the problem is all about how to make our thread waked up when time is up.</p>
+<h4 id="How-to-do-that"><a href="#How-to-do-that" class="headerlink" title="How to do that?"></a>How to do that?</h4><p>The way Muduo use to do such thing is quite different from what I once did.<br>I once used two stupid methods, <code>sleep</code> and <code>busy loop and judge</code>.<br>They are bad as far as accuracy is concerned.<br>Besides, they are quite ‘low’ and ‘unprofessional’, right?<br>Students may do that.<br>But we need to be  professional.<br>Muduo uses <code>timerfd</code> with <code>poll</code>.<br>When I refer to <code>poll</code>, I mean <code>select</code>, <code>poll</code>, <code>epoll</code>.<br>They are provided by linux system.<br>If you are not clear about them, man them on a linux system or search the internet.<br>I assumed you know the basic things about <code>poll</code> here.<br>However, <code>timerfd</code> is something new to me.<br>A <code>timerfd</code> is a special file descriptor which will become readable when the time we set expires.<br>It is done by the linux system.<br>Wow, wonderful! This enables us to take an expiration as the same thing with an I/O event.<br>And we can detect these events with <code>poll</code>.</p>
+<h4 id="How-to-add-a-Timer"><a href="#How-to-add-a-Timer" class="headerlink" title="How to add a Timer?"></a>How to add a Timer?</h4><ol>
+<li>At the very beginning, we create a timerfd by calling <code>timerfd_create</code> of linux.<br>This is done only once.<br>But we may set the timerfd many times later.<br>We may have a lot of timers, and we want to be notified when the earliest one of them expired.</li>
+<li>Insert the timer into the data structure we use to store them, which is <code>timers_</code> here.<br>As you can see, there is another member <code>activeTimers_</code>.<br>Unfortunately I don’t understand what is it for.<br>But it doesn’t matter.<br>Notice the definition of <code>TimerList</code> and <code>Entry</code>.<br><code>TimerList</code> is a set of <code>Entry</code>.<br>An <code>std::set</code> is an ordered container implemented by RBTree.<br>We store entries in it so that they can be sorted by their expiration time, which is represented by a <code>Timestamp</code>.<br>Considering different timers may have the same timestamp, we make pair a timestamp with a pointer of the timer.<br>This ensures us no collisions between timers.</li>
+<li>Reset the <code>timerfd</code> if necessary.<br>This should be done when the latest inserted timer would expire earliest.<br>We do this by calling linux function <code>timerfd_settime</code>.  </li>
+</ol>
+<h4 id="How-to-call-the-callbacks-when-they-expired"><a href="#How-to-call-the-callbacks-when-they-expired" class="headerlink" title="How to call the callbacks when they expired?"></a>How to call the callbacks when they expired?</h4><p>As I mentioned above, a timerfd is treated as a normal fd.<br>And we use <code>poll</code> function to detect that.<br>By the way, let’s take a look at Muduo’s thread model.<br>Muduo is of the <code>Reactor</code> Pattern.<br>Every single loop of <code>EventLoop</code> looks like this:<br><img src="https://raw.githubusercontent.com/Irving-cl/blog_assets/master/notes_on_muduo_timer/muduo_reactor.png" alt="img"></p>
+<ol>
+<li>At first, a poller will poll all the fds and update the channels.<br>A channel can be seen as a bridge between low-level I/O and high-level callbacks;<br>Notice that there is a <code>timerfdChannel_</code> in TimerQueue’s members.<br>Once the time we set expired, the <code>timerfdChannel_</code> will be updated.</li>
+<li>After that, <code>timerfdChannel_</code> found that the fd it took charge became readable,<br>it call its handleRead function.</li>
+<li>In its handleRead function, it will remove all the expired timers and run their callbacks.<br>Of course, we should also read the timerfd and reset it.   </li>
+</ol>
+<p>Now I think we have a general idea about how muduo timer works. The core of the implementation is <code>timerfd</code>, <code>poll</code> and <code>Reactor</code> pattern. Thanks for reading!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/03/hello-world/" data-id="cjhya1w3300000sji9bzt4kpn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjhydoqqv0006gejipmvckokh" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cf-869C" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/10/cf-869C/" class="article-date">
+  <time datetime="2017-10-10T06:59:00.000Z" itemprop="datePublished">2017-10-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/10/cf-869C/">Codeforces 869C The Intriguing Obsession</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>At first I got stuck with this problem.<br>
+So I considered a simple case when there are only islands of two colors(c = 0).<br>
+And it is easy to calculate the number of different ways under the constraints.</p>
+<p>Suppose we only have islands with red and blue.<br>
+Since we can only build bridges between a red island and a blue island, and further, we can only connect one blue island with one specific red island (otherwise distance between two blue islands is 2).<br>
+And vice versa.<br>
+Let <code>f(i)</code> be the number of different ways to build bridges when there are i bridges between red islands and blue islands.</p>
+<p>Then we have:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>i</mi><mo>)</mo><mo>=</mo><msubsup><mi>C</mi><mi>a</mi><mi>i</mi></msubsup><mo>⋅</mo><msubsup><mi>C</mi><mi>b</mi><mi>i</mi></msubsup><mo>⋅</mo><mi>i</mi><mo>!</mo></mrow><annotation encoding="application/x-tex">f(i) = C_a^i \cdot C_b^i \cdot i!
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8746639999999999em;"></span><span class="strut bottom" style="height:1.1246639999999999em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mclose">)</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mord mathit" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8746639999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">a</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathit" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8746639999999999em;"><span style="top:-2.4530000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">b</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit">i</span><span class="mclose">!</span></span></span></span></span></p>
+<p>Since we can pick i islands from red ones and i islands from blue ones, and we permutate i islands to match them.<br>
+And the total number of it is:</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munderover><mo>∑</mo><mi>i</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo>)</mo></mrow></munderover><mi>f</mi><mo>(</mo><mi>i</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\sum_i^{min(a,b)} f(i)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.9610050000000003em;"></span><span class="strut bottom" style="height:3.2386740000000005em;vertical-align:-1.277669em;"></span><span class="base"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.9610050000000003em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">i</span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.386005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathit mtight">m</span><span class="mord mathit mtight">i</span><span class="mord mathit mtight">n</span><span class="mopen mtight">(</span><span class="mord mathit mtight">a</span><span class="mpunct mtight">,</span><span class="mord mathit mtight">b</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"></span></span></span></span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit">i</span><span class="mclose">)</span></span></span></span></span></p>
+<p>And next, we need to do with three colors.<br>
+Try to add bridges between red islands and purple ones, and between blue and purple.<br>
+And these bridges are exactly the same thing we calculated above.<br>
+More importantly, bridges between red and purple, bridges between blue and purple are independent!<br>
+And so is bridges between red and blue.<br>
+The three groups of bridges are independent from each other.<br>
+Change bridges in one group will not break the constraints.<br>
+So our final answer is multiply the three number together.</p>
+<p>Here is my code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>; </span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mod 998244353</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">5010</span>;</span><br><span class="line">ll p[N],inv[N];</span><br><span class="line"><span class="function">ll <span class="title">C</span><span class="params">(<span class="keyword">int</span> n,<span class="keyword">int</span> m)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (((p[n]*inv[m])%mod)*inv[n-m])%mod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">qp</span><span class="params">(ll x,ll k)</span> </span>&#123;</span><br><span class="line">    ll ret=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (k&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (k&amp;<span class="number">1</span>) ret=(ret*x)%mod;</span><br><span class="line">        k&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">        x=(x*x)%mod;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    p[<span class="number">0</span>]=<span class="number">1</span>;inv[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">5000</span>;i++) &#123;</span><br><span class="line">        p[i]=(p[i<span class="number">-1</span>]*i)%mod;</span><br><span class="line">        inv[i]=qp(p[i],mod<span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    init();</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,a,a+<span class="number">1</span>,a+<span class="number">2</span>);</span><br><span class="line">    ll ans[<span class="number">3</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x=i,y=(i+<span class="number">1</span>)%<span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> lim=min(a[x],a[y]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=lim;j++) &#123;</span><br><span class="line">            ll tmp=(((C(a[x],j)*C(a[y],j))%mod)*p[j])%mod;</span><br><span class="line">            ans[i]=(ans[i]+tmp)%mod;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ll res=(((ans[<span class="number">0</span>]*ans[<span class="number">1</span>])%mod)*ans[<span class="number">2</span>])%mod;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
+<p>I use multiplicative inverse to calculate compositions of big number, the editorial uses dynammic programming instead.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjhydoqqi0000gejisdwsmsy4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cf-864E" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/28/cf-864E/" class="article-date">
+  <time datetime="2017-09-28T09:35:00.000Z" itemprop="datePublished">2017-09-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/28/cf-864E/">Codeforces 864E Fire</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Problem: <a href="http://codeforces.com/problemset/problem/864/E" target="_blank" rel="noopener">Codeforces 864E Fire</a></p>
+<p>Well, we may easily think of the \’Knapsack\’ problem at the first glimpse of this problem. Luckily, with small modification on the solution to the \’Knapsack\’ problem we can solve this problem.</p>
+<p>Let\’s use dynamic programming. Let dp[i][j] be the max total value of the first <em>i</em> items we can rescue in first <em>j</em> seconds. And we easily get <code>dp[i][j] = dp[i-1][j-t[i]] + p[i]</code>. Notice that j has to be smaller than d[i], or we cannot save this item and of course, larger than or equal to t[i]. And when we calculate the dp for answer, we have to iterate items in increasing order of their d[i]. You can simply figure out that, since the final answer must be with the latest time, and value for later time depends on value for earlier time.</p>
+<p>And with the well-known trick for \’Knapsack\’ problem we can only use one-dimensional array as our <code>dp</code>.</p>
+<p>My code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">2010</span>;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="keyword">int</span> t,d,p;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> t,d,p,id;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> node&amp; rhs) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> d&lt;rhs.d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;node&gt; a;</span><br><span class="line"><span class="keyword">int</span> dp[N];</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; vec[N];</span><br><span class="line"><span class="keyword">int</span> idx=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;t,&amp;d,&amp;p);</span><br><span class="line">        a.pb(&#123;t,d,p,i&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    sort(a.begin(),a.end());</span><br><span class="line">    <span class="keyword">int</span> mx=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=a[i].d<span class="number">-1</span>;j&gt;=a[i].t;j--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (dp[j]&lt;dp[j-a[i].t]+a[i].p) &#123;</span><br><span class="line">                dp[j]=dp[j-a[i].t]+a[i].p;</span><br><span class="line">                vec[j]=vec[j-a[i].t];</span><br><span class="line">                vec[j].pb(a[i].id);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (mx&lt;dp[j]) &#123;</span><br><span class="line">                idx=j;</span><br><span class="line">                mx=dp[j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,mx);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,(<span class="keyword">int</span>)vec[idx].size());</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> ele:vec[idx]) <span class="built_in">printf</span>(<span class="string">"%d "</span>,ele);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjhydoqqm0001gejigjtbrodr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-cmake-link-issue" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/27/cmake-link-issue/" class="article-date">
+  <time datetime="2017-09-27T07:15:27.000Z" itemprop="datePublished">2017-09-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/27/cmake-link-issue/">CMake link issue</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>When we use cmake to compile our program and use <code>TARGET_LINK_LIBRARIES</code> to link libraries we need, we have to pay attention to the order these libraries are specified.</p>
+<p>In the following case, our program depends on the muduo_base library and muduo_base library depends on pthread, then we have to ensure pthread is after muduo_base:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> <span class="variable">$&#123;MUDUO_NET_LIBRARY&#125;</span> <span class="variable">$&#123;MUDUO_BASE_LIBRARY&#125;</span> pthread)</span><br></pre></td></tr></table></figure><br>Otherwise, we would get a link error if we specify like this:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> pthread <span class="variable">$&#123;MUDUO_NET_LIBRARY&#125;</span> <span class="variable">$&#123;MUDUO_BASE_LIBRARY&#125;</span>)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjhydoqqt0005gejik5gefmi1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
+
     </footer>
   </div>
   
@@ -118,18 +335,39 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/competitive-programming/">competitive programming</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 20px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 10px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/net/" style="font-size: 10px;">net</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -142,7 +380,23 @@
       <ul>
         
           <li>
-            <a href="/2018/06/03/hello-world/">Hello World</a>
+            <a href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/07/notes-on-muduo-timer/">Notes on Muduo Timer</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/10/cf-869C/">Codeforces 869C The Intriguing Obsession</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/28/cf-864E/">Codeforces 864E Fire</a>
+          </li>
+        
+          <li>
+            <a href="/2017/09/27/cmake-link-issue/">CMake link issue</a>
           </li>
         
       </ul>
@@ -184,5 +438,20 @@
 
 
   </div>
-<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script></body>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>
