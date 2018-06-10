@@ -66,6 +66,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cf-984E" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/10/cf-984E/" class="article-date">
+  <time datetime="2018-06-10T14:24:38.000Z" itemprop="datePublished">2018-06-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/10/cf-984E/">Codeforces 984E Elevator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The problem: <a href="http://codeforces.com/problemset/problem/984/E" target="_blank" rel="noopener">Codeforces 984E Elevator</a><br>I failed to solve the problem by myself although I believed it should be solved by dp immediately after I read the problem. The difficult and interesting part of this problem is how to arrange the <strong>state</strong> of the whole process so that the total number of <strong>state</strong> is as small as possible.<br>Let’s think about it. For a state transition, we need to know:</p>
+<ol>
+<li>How many people have got in the elevator(may have got out).</li>
+<li>Current floor.</li>
+<li>Which floors do people currently in the elevator want to go.</li>
+</ol>
+<p>The only problem is third one. There are at most 4 people in the elevator and each person may go to each of the 9 floors. So there would be<br>$$ 10^4=10000 $$<br>states in total in the 3rd dimension of dp.<br>However, it is a little bit more than we can afford. Actually some of the states in the above are repeated. Say, <code>person 1 goes to floor 3 and person 2 goes to floor 4</code> is the same as <code>person 1 goes to floor 4 and person 2 goes to 3</code>. So we only care about how many people go to each floor, with no need to know who. Hence the total number of state is:<br>$$ \binom{9}{0} + \binom{9}{1} + \binom{9}{2} + \binom{9}{3} + \binom{9}{4} = 256 $$</p>
+<p>This enable us to get accepted.<br>And some technique should be adopted to represent the state. Instead of using integers, we use a 4-char-long string to represent a state. With the help of map, we can implement it nicely:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int_ int64_t</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000003</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">2010</span>;</span><br><span class="line"><span class="keyword">int</span> n,a[N],b[N];</span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>,<span class="keyword">int</span>&gt; dp[N][<span class="number">10</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> idx,<span class="keyword">int</span> cur,<span class="keyword">const</span> <span class="built_in">string</span>&amp; s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (idx&gt;n&amp;&amp;s==<span class="string">"0000"</span>) &#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;</span><br><span class="line">    <span class="keyword">int</span>&amp; res=dp[idx][cur][s];</span><br><span class="line">    <span class="keyword">if</span> (res) <span class="keyword">return</span> res;</span><br><span class="line">    res=INF;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> c=<span class="string">'1'</span>;c&lt;=<span class="string">'9'</span>;c++) &#123;</span><br><span class="line">        <span class="built_in">string</span> t=s;</span><br><span class="line">        <span class="keyword">int</span> x=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (t[i]==c) t[i]=<span class="string">'0'</span>,x++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> now=idx;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (t[i]==<span class="string">'0'</span>&amp;&amp;now&lt;=n&amp;&amp;a[now]+<span class="string">'0'</span>==c) &#123;</span><br><span class="line">                t[i]=b[now++]+<span class="string">'0'</span>;</span><br><span class="line">                x++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        sort(t.begin(),t.end());</span><br><span class="line">        <span class="keyword">if</span> (idx==now&amp;&amp;t==s) <span class="keyword">continue</span>;</span><br><span class="line">        res=min(res,<span class="built_in">abs</span>(cur-(c-<span class="string">'0'</span>))+x+dfs(now,c-<span class="string">'0'</span>,t));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,a+i,b+i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,dfs(<span class="number">1</span>,<span class="number">1</span>,<span class="string">"0000"</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cji8xvogh0000sxjivlnetlz9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-cf-894B" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/25/cf-894B/" class="article-date">
@@ -101,7 +151,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjhys9fzp0009qxjiqbzivy4y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cji8xvoh20005sxjimhvmomsl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
@@ -162,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjhys9g01000dqxjib9rnrakf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cji8xvoht0013sxjid8sm61z3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -209,7 +259,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjhys9fzu000aqxji41tabr92" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cji8xvogv0004sxji98zs0w72" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -256,7 +306,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjhys9fy70000qxjiolc77veg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cji8xvogm0001sxjipg4p4818" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -296,7 +346,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjhys9fzy000cqxjikp2jh9ln" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cji8xvohs0012sxjiv9pe49wm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -328,7 +378,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -338,7 +388,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 20px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 10px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/net/" style="font-size: 10px;">net</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 20px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -347,7 +397,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -358,6 +408,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/06/10/cf-984E/">Codeforces 984E Elevator</a>
+          </li>
         
           <li>
             <a href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
@@ -373,10 +427,6 @@
         
           <li>
             <a href="/2017/09/28/cf-864E/">Codeforces 864E Fire</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/27/cmake-link-issue/">CMake link issue</a>
           </li>
         
       </ul>
