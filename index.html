@@ -66,6 +66,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-max-flow-algorithm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/30/max-flow-algorithm/" class="article-date">
+  <time datetime="2018-06-30T01:16:14.000Z" itemprop="datePublished">2018-06-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/30/max-flow-algorithm/">Max Flow Algorithm</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Maximum</strong> flow is a important part of graph theory in competitive programming. There have been already thousands of articles and blogs teaching people the principle and the implementation of max flow. So I’m not going to elaborate these things again. This blog is just written to help me implement the max flow algorithm faster in a competition with less mistakes.</p>
+<h2 id="Ford-Fulkson"><a href="#Ford-Fulkson" class="headerlink" title="Ford-Fulkson"></a>Ford-Fulkson</h2><p>The main idea of max flow algorithm is to find <strong>augmented path</strong> until there is no one. When we find an augmented path, we need to change the residual graph. We should reduce the capcity of each edge on the path and increase it on each reverse edge on it by the flow we found. So in the implementation we don’t need to store the current flow of each edge, we just need to store the capcity of them.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">20005</span>,M=<span class="number">2000005</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> to,next,cap;</span><br><span class="line">&#125; e[N];</span><br><span class="line"><span class="keyword">int</span> head[N],tot;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_edge</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> v,<span class="keyword">int</span> cap)</span> </span>&#123;</span><br><span class="line">    e[tot].to=v;</span><br><span class="line">    e[tot].cap=cap;</span><br><span class="line">    e[tot].next=head[u];</span><br><span class="line">    head[u]=tot++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">bool</span> vis[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> sink,<span class="keyword">int</span> f)</span> </span>&#123;</span><br><span class="line">    vis[u]=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (u==sink) <span class="keyword">return</span> f;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=head[u];i!=<span class="number">-1</span>;i=e[i].next) &#123;</span><br><span class="line">        <span class="keyword">int</span> to=e[i].to;</span><br><span class="line">        <span class="keyword">if</span> (!vis[to]&amp;&amp;e[i].cap&gt;<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> ff=dfs(to,min(f,e[i].cap));</span><br><span class="line">            <span class="keyword">if</span> (ff&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                e[i].cap-=cap;</span><br><span class="line">                e[i^<span class="number">1</span>].cap+=cap;</span><br><span class="line">                <span class="keyword">return</span> ff;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="built_in">memset</span>(head,<span class="number">-1</span>,<span class="keyword">sizeof</span>(head));</span><br><span class="line">    <span class="comment">// Build graph here</span></span><br><span class="line">    <span class="keyword">int</span> max_flow=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="keyword">sizeof</span>(vis));</span><br><span class="line">        <span class="keyword">int</span> ff=dfs(src,sink,INF);</span><br><span class="line">        <span class="keyword">if</span> (ff&gt;<span class="number">0</span>) max_flow+=ff;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"max_flow:%d\n"</span>,max_flow);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Ford-Fulkson</strong> is fast enough in most cases. But sometime it cannot meet our requirements. That’s why we need <strong>Dinic</strong>.</p>
+<h2 id="Dinic"><a href="#Dinic" class="headerlink" title="Dinic"></a>Dinic</h2><p>Two optimizations are used in <strong>Dinic</strong> which make it faster. One is<code>level</code> array and the other is <code>arc optimization</code>. I’m not going to elaborate how they work here. Different from <strong>Ford-Fulkson</strong>, it runs a <code>bfs</code> to build the <code>level graph</code> and then run <code>dfs</code> a couple of times(without initializing).<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">20005</span>,M=<span class="number">2000005</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> to,next,cap;</span><br><span class="line">&#125; e[N];</span><br><span class="line"><span class="keyword">int</span> head[N],tot;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_edge</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> v,<span class="keyword">int</span> cap)</span> </span>&#123;</span><br><span class="line">    e[tot].to=v;</span><br><span class="line">    e[tot].cap=cap;</span><br><span class="line">    e[tot].next=head[u];</span><br><span class="line">    head[u]=tot++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> level[N],iter[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> src)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    <span class="built_in">memset</span>(level,<span class="number">-1</span>,<span class="keyword">sizeof</span>(level));</span><br><span class="line">    level[src]=<span class="number">0</span>;</span><br><span class="line">    q.push(src);</span><br><span class="line">    <span class="keyword">while</span> (!q.empty()) &#123;</span><br><span class="line">        <span class="keyword">int</span> cur=q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=head[cur];i!=<span class="number">-1</span>;i=e[i].next) &#123;</span><br><span class="line">            <span class="keyword">int</span> to=e[i].to;</span><br><span class="line">            <span class="keyword">if</span> (e[i].cap&gt;<span class="number">0</span>&amp;&amp;level[to]==<span class="number">-1</span>) &#123;</span><br><span class="line">                level[to]=level[cur]+<span class="number">1</span>;</span><br><span class="line">                q.push(to);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u,<span class="keyword">int</span> sink,<span class="keyword">int</span> f)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (u==sink) <span class="keyword">return</span> f;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span>&amp; i=iter[u];i!=<span class="number">-1</span>;i=e[i].next) &#123;</span><br><span class="line">        <span class="keyword">int</span> to=e[i].to;</span><br><span class="line">        <span class="keyword">if</span> (e[i].cap&gt;<span class="number">0</span>&amp;&amp;level[u]&lt;level[to]) &#123;</span><br><span class="line">            <span class="keyword">int</span> ff=dfs(to,sink,min(f,e[i].cap));</span><br><span class="line">            <span class="keyword">if</span> (ff&gt;<span class="number">0</span>) &#123;</span><br><span class="line">                e[i].cap-=ff;</span><br><span class="line">                e[i^<span class="number">1</span>].cap+=ff;</span><br><span class="line">                <span class="keyword">return</span> ff;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="built_in">memset</span>(head,<span class="number">-1</span>,<span class="keyword">sizeof</span>(head));</span><br><span class="line">    <span class="comment">// Build graph here</span></span><br><span class="line">    <span class="keyword">int</span> mx_flow=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        bfs();</span><br><span class="line">        <span class="keyword">if</span> (level[sink]==<span class="number">-1</span>) <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) iter[i]=head[i];</span><br><span class="line">        <span class="keyword">int</span> ff;</span><br><span class="line">        <span class="keyword">while</span> ((ff=dfs(src,sink,INF)&gt;<span class="number">0</span>)) &#123;</span><br><span class="line">            mx_flow+=ff;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,mx_flow);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjj0rgkzw0009rdjg313jwgpp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-cf-984E" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/10/cf-984E/" class="article-date">
@@ -104,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cji8xvogh0000sxjivlnetlz9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjj0rgkzr0005rdjgzgw2dr88" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
@@ -151,7 +197,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cji8xvoh20005sxjimhvmomsl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjj0rgkzk0001rdjggbzg29ro" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
@@ -212,7 +258,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cji8xvoht0013sxjid8sm61z3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjj0rgl0h0018rdjgppqcf4ny" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -259,7 +305,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cji8xvogv0004sxji98zs0w72" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjj0rgkzt0006rdjgf00jelnw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -306,7 +352,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cji8xvogm0001sxjipg4p4818" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjj0rgkzg0000rdjgiext1r22" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -346,7 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cji8xvohs0012sxjiv9pe49wm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjj0rgkzp0004rdjgelny64ld" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -378,7 +424,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -388,7 +434,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 20px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 16.67px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 13.33px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 10px;">max-flow</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -410,6 +456,10 @@
       <ul>
         
           <li>
+            <a href="/2018/06/30/max-flow-algorithm/">Max Flow Algorithm</a>
+          </li>
+        
+          <li>
             <a href="/2018/06/10/cf-984E/">Codeforces 984E Elevator</a>
           </li>
         
@@ -423,10 +473,6 @@
         
           <li>
             <a href="/2017/10/10/cf-869C/">Codeforces 869C The Intriguing Obsession</a>
-          </li>
-        
-          <li>
-            <a href="/2017/09/28/cf-864E/">Codeforces 864E Fire</a>
           </li>
         
       </ul>
@@ -482,6 +528,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script></body>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>
