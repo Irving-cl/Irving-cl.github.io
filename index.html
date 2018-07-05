@@ -66,6 +66,68 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-geometry-basics" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/02/geometry-basics/" class="article-date">
+  <time datetime="2018-07-02T15:00:08.000Z" itemprop="datePublished">2018-07-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/02/geometry-basics/">Geometry Basics</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Geometry is a important part in competitive programming. However, it doesn’t appear much in small races. That’s why I’m quite unfamiliar with it. But I’m convinced that I will have to handle these problems sooner or later.</p>
+<p>This blog is just a very start of geometry. I collect some very basic things in geometry and we only talk about two-dimensional. All the vectors mentioned below are two-dimensional.</p>
+<p>I would introduce:</p>
+<ol start="0">
+<li>Common data structure for geometry problems</li>
+<li>Dot product</li>
+<li>Cross product</li>
+<li>Are the two vectors parallel</li>
+<li>Is the point on the line or the segment</li>
+<li>Get the cross point of two lines</li>
+<li>Do the two segments touch each other</li>
+</ol>
+<h3 id="Common-data-structure"><a href="#Common-data-structure" class="headerlink" title="Common data structure"></a>Common data structure</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P</span> &#123;</span></span><br><span class="line">    db x,y;</span><br><span class="line">    P()&#123;&#125;</span><br><span class="line">    P(db xx,db yy):x(xx),y(yy)&#123;&#125;</span><br><span class="line">    P <span class="keyword">operator</span>+(P rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(x+rhs.x,y+rhs.y);</span><br><span class="line">    &#125;</span><br><span class="line">    P <span class="keyword">operator</span>-(P rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(x-rhs.x,y-rhs.y);</span><br><span class="line">    &#125;</span><br><span class="line">    P <span class="keyword">operator</span>*(db k) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(k*x,k*y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">db <span class="title">dot</span><span class="params">(P rhs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x*rhs.x+y*rhs.y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">db <span class="title">det</span><span class="params">(P rhs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x*rhs.y-y*rhs.x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>This is a really simple struct, but it is quite powerful. It enables us to implement geometry algorithm elegantly. One of the good parts of it is that it can be taken as both a <code>Point</code> as well as a <code>Two-dimensional vector</code>.</p>
+<h3 id="Dot-product"><a href="#Dot-product" class="headerlink" title="Dot product"></a>Dot product</h3><p>$$ \overrightarrow{AB} \cdot \overrightarrow{AC} = a $$<br>The geometric meaning of dot product is the length(maybe negative) of the projection of one vector onto the other. The result of dot product is a <strong>value</strong>.</p>
+<h3 id="Cross-product"><a href="#Cross-product" class="headerlink" title="Cross product"></a>Cross product</h3><p>$$ \overrightarrow{AB} \times \overrightarrow{AC} = \overrightarrow{AD} $$<br>The result of cross product is actually a <strong>vector</strong> which is perpendicular to the plane which is deterimined by the two vectors. But in two dimension, we can take the result as a <strong>value</strong> which is equal to the area of the parallelogram determined by the two vectors.</p>
+<h3 id="Are-the-two-vectors-parallel"><a href="#Are-the-two-vectors-parallel" class="headerlink" title="Are the two vectors parallel"></a>Are the two vectors parallel</h3><p>This is quite simple. When two vectors are parallel, the area of the parallelogram formed by them is <strong>0</strong>. So we can use cross product to get the area of the parallelogram and tell if the two vectors are parallel.</p>
+<h3 id="Is-the-point-on-the-line-or-the-segment"><a href="#Is-the-point-on-the-line-or-the-segment" class="headerlink" title="Is the point on the line or the segment"></a>Is the point on the line or the segment</h3><p>Let’s start with line.  Call the point to be judged <code>A</code>, and find any two points <code>B</code>,<code>C</code> on the line.<br>Obviously, if <code>A</code> is on the line, then we have:<br>$$ \overrightarrow{AB} \times \overrightarrow{AC} = 0 $$<br>Now let’s go with segment. We call the two endpoints of the segment <code>B</code>, <code>C</code> now.<br>If <code>A</code> is on the segment, <code>A</code> has to be on the line first. Then <code>B</code> and <code>C</code> should be on different sides of <code>A</code>. We can check this simply by:<br>$$ \overrightarrow{AB} \cdot \overrightarrow{AC} &lt;= 0 $$</p>
+<h3 id="Get-the-cross-point-of-two-lines"><a href="#Get-the-cross-point-of-two-lines" class="headerlink" title="Get the cross point of two lines"></a>Get the cross point of two lines</h3><p>We need pay attention to whether the two lines are <strong>exactly the same line</strong> and whether they are <strong>parallel</strong> at first.<br>Say, <code>p1</code> and <code>p2</code> are two points one line 1.<br>Then we can represent any point on line 1 as: $ p_{1} + t \cdot (p_{2} - p_{1}) $.<br>And what we need to do is to calculate <code>t</code> to make the point on line 2.<br>We can calculate <code>t</code> as :<br>$$<br>t = \frac<br>{(q_{2} - q_{1}) \times (q_{1} - p_{1})}<br>{(q_{2} - q_{1}) \times (p_{2} - p_{1})}<br>$$<br>So the cross point is:<br>$$<br>p_{1} +<br>\frac<br>{(q_{2} - q_{1}) \times (q_{1} - p_{1})}<br>{(q_{2} - q_{1}) \times (p_{2} - p_{1})}<br>\cdot<br>(p_{2} - p_{1})<br>$$<br>I cannot explain clearly why it works. We can simply think the proportion of area of two parallelograms.</p>
+<h3 id="Do-the-two-segments-touch-each-other"><a href="#Do-the-two-segments-touch-each-other" class="headerlink" title="Do the two segments touch each other"></a>Do the two segments touch each other</h3><p>Since we have <strong>4</strong> and <strong>5</strong>, we can do tell this easily. First, we get the cross point of the two lines where the two segments lie. Next, we judge if the cross point is on both segments. Really simple, right?</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjj4eq8cl0004fjjgabpnc0l1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-max-flow-algorithm" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/06/30/max-flow-algorithm/" class="article-date">
@@ -100,7 +162,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjj0rgkzw0009rdjg313jwgpp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjj4eq8dg000wfjjgf2pdy5ol" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li></ul>
@@ -150,7 +212,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjj0rgkzr0005rdjgzgw2dr88" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjj4eq8dd000ufjjg55kpg2ut" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
@@ -197,7 +259,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjj0rgkzk0001rdjggbzg29ro" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjj4eq8dc000sfjjg8du1gwun" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
@@ -258,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjj0rgl0h0018rdjgppqcf4ny" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjj4eq8de000vfjjgchmd9jr4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -305,7 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjj0rgkzt0006rdjgf00jelnw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjj4eq8ce0001fjjgvp8qtz99" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -352,7 +414,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjj0rgkzg0000rdjgiext1r22" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjj4eq8c90000fjjgz3n2fn1i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -392,7 +454,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjj0rgkzp0004rdjgelny64ld" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjj4eq8da000rfjjgar4va64d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -424,7 +486,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -434,7 +496,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 16.67px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 13.33px;">dynamic programming</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 10px;">max-flow</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 16.67px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 13.33px;">dynamic programming</a> <a href="/tags/geometry/" style="font-size: 10px;">geometry</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 10px;">max-flow</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -443,7 +505,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -454,6 +516,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/07/02/geometry-basics/">Geometry Basics</a>
+          </li>
         
           <li>
             <a href="/2018/06/30/max-flow-algorithm/">Max Flow Algorithm</a>
@@ -469,10 +535,6 @@
         
           <li>
             <a href="/2017/11/07/notes-on-muduo-timer/">Notes on Muduo Timer</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/10/cf-869C/">Codeforces 869C The Intriguing Obsession</a>
           </li>
         
       </ul>
