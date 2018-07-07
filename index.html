@@ -66,6 +66,49 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-subsets-property-merge" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/07/subsets-property-merge/" class="article-date">
+  <time datetime="2018-07-07T02:47:37.000Z" itemprop="datePublished">2018-07-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/07/subsets-property-merge/">Subsets Property Merge</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Given such a problem:<br>There is a sequence of length N: $ A_{0} $, $ A_{1} $,…, $ A_{N} $. For every integer K satisfying $ 1 \le K \le N $, find the maximum value of $A_{i}+A_{j}$ where $i\subseteq K$ and $j \subseteq K$. Here, <strong>$a \subseteq b$</strong> means that, in binary representation, the set of positions of a is a subset of that of b.<br>This problem is actually a subproblem of <a href="https://beta.atcoder.jp/contests/arc100/tasks/arc100_c" target="_blank" rel="noopener">ARC 100 E</a>. The solution to such problem is very similar to dynamic programming and I think it could be used in many cases.<br>Code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">1</span>&lt;&lt;<span class="number">18</span>;</span><br><span class="line"><span class="keyword">int</span> a[N];</span><br><span class="line">PII mx[N];</span><br><span class="line"><span class="keyword">int</span> n;    <span class="comment">// n is the count of digits</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[i]&lt;a[j];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;(<span class="number">1</span>&lt;&lt;n);i++) &#123;</span><br><span class="line">        cur.clear();</span><br><span class="line">        cur.pb(i);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((i&gt;&gt;j)&amp;<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> x=i^(<span class="number">1</span>&lt;&lt;j);</span><br><span class="line">                cur.pb(mx[x].first);</span><br><span class="line">                <span class="keyword">if</span> (mx[i].second!=<span class="number">-1</span>) cur.pb(mx[x].second);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        sort(cur.begin(),cur.end());</span><br><span class="line">        cur.resize(unique(cur.begin(),cur.end())-cur.begin());</span><br><span class="line">        <span class="keyword">if</span> (cur.size()==<span class="number">1</span>) &#123;</span><br><span class="line">            mx[i]=mp(cur[<span class="number">0</span>],<span class="number">-1</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mx[i]=mp(cur[<span class="number">0</span>],cur[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>The two elements of <code>mx[k]</code> are the two largest elements satisfying $i \subseteq k$ and $j \subseteq k$. So we can get the maximum value of $A_{i} + A_{j}$.<br>Here we compute the result of k from the result of its <em>subsets</em>(has only one bit different).</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/07/subsets-property-merge/" data-id="cjjate5280009lxjghad0talq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-geometry-basics" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/02/geometry-basics/" class="article-date">
@@ -116,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjj4eq8cl0004fjjgabpnc0l1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjjate52a000alxjgeomo25k8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
@@ -162,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjj4eq8dg000wfjjgf2pdy5ol" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjjate52e000elxjg0enu01lm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li></ul>
@@ -212,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjj4eq8dd000ufjjg55kpg2ut" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjjate5220005lxjgraphobrm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
@@ -259,7 +302,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjj4eq8dc000sfjjg8du1gwun" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjjate5200004lxjgkuwbnkbz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
@@ -320,7 +363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjj4eq8de000vfjjgchmd9jr4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjjate530001klxjgvkk4bnnj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -367,7 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjj4eq8ce0001fjjgvp8qtz99" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjjate51t0001lxjgn0czmjro" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -414,7 +457,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjj4eq8c90000fjjgz3n2fn1i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjjate51o0000lxjgbajrw4sv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -454,7 +497,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjj4eq8da000rfjjgar4va64d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjjate5240006lxjg0c49t8zm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -518,6 +561,10 @@
       <ul>
         
           <li>
+            <a href="/2018/07/07/subsets-property-merge/">Subsets Property Merge</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/02/geometry-basics/">Geometry Basics</a>
           </li>
         
@@ -531,10 +578,6 @@
         
           <li>
             <a href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/07/notes-on-muduo-timer/">Notes on Muduo Timer</a>
           </li>
         
       </ul>
