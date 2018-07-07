@@ -66,6 +66,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cf-995C" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/07/cf-995C/" class="article-date">
+  <time datetime="2018-07-07T13:44:57.000Z" itemprop="datePublished">2018-07-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/07/cf-995C/">Codeforces 995C Leaving the Bar</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Problem: <a href="http://codeforces.com/contest/995/problem/C" target="_blank" rel="noopener">Codeforces 995C Leaving the Bar</a><br>Given n two-dimensional vectors $\vec v_{i}$ and n intergers $ c_{1},c_{2},…c_{n} $. It’s guaranteed that $ |v| \le 1e6 $ and $ c_{i} = 1 or -1 $. Let $\vec p = \sum_{i=1}^{n} c_{i}\vec v_{i}$. Determine the value of $c_{i}$ to satisfy $|p| \le 1.5 \cdot 1e6$.</p>
+<p>As n is at most $10^{5}$, it is impossible to enumerate all the cases.<br>The key to solve this problem is such a conclusion:<br><strong>Given 3 vectors $\vec v$, $|v| \le R$, we can always get some $\vec v_{i} + \vec v_{j}$ or $\vec v_{i} - \vec v_{j}$ that has length at least R.</strong><br>With the opposite vectors of the 3 vectors, there are 6 vectors altogether now. So if we divide the plane into 6 60-degree sectors, there is at least one sector that contains two vectors(they are not the opposite for sure). Pretty good.</p>
+<p>So we can merge vectors until there are only 2 vectors.<br>We always pick 3 vectors and merge 2 of them if the length of the result vector is less equal than 1e6.<br>And we can ensure that length of the sum or difference of the last 2 vectors is less equal than $\sqrt{2} \cdot 1e6 \le 1.5 \cdot 1e6$.</p>
+<p>My Code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">100010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> R=<span class="number">1000000</span>;</span><br><span class="line"><span class="keyword">const</span> db eps=<span class="number">1e-8</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P</span> &#123;</span></span><br><span class="line">    db x,y;</span><br><span class="line">    P()&#123;&#125;</span><br><span class="line">    P(db xx,db yy):x(xx),y(yy)&#123;&#125;</span><br><span class="line">    P <span class="keyword">operator</span>+(P rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(x+rhs.x,y+rhs.y);</span><br><span class="line">    &#125;</span><br><span class="line">    P <span class="keyword">operator</span>-(P rhs) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(x-rhs.x,y-rhs.y);</span><br><span class="line">    &#125;</span><br><span class="line">    P <span class="keyword">operator</span>*(db k) &#123;</span><br><span class="line">        <span class="keyword">return</span> P(k*x,k*y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">db <span class="title">dot</span><span class="params">(P rhs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x*rhs.x+y*rhs.y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">db <span class="title">det</span><span class="params">(P rhs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x*rhs.y-y*rhs.x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> ls,rs,type;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n,tot=<span class="number">0</span>;</span><br><span class="line">P vec[<span class="number">2</span>*N];</span><br><span class="line">node nd[<span class="number">2</span>*N];</span><br><span class="line"><span class="keyword">int</span> ans[N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> id,<span class="keyword">int</span> type)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nd[id].ls==<span class="number">-1</span>) &#123;</span><br><span class="line">        ans[id]=type;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(nd[id].ls,type);</span><br><span class="line">    dfs(nd[id].rs,type*nd[id].type);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n);</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%lf%lf"</span>,&amp;vec[tot].x,&amp;vec[tot].y);</span><br><span class="line">        nd[tot++]=&#123;<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        q.push(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (q.size()&gt;<span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> a[<span class="number">3</span>]=&#123;<span class="number">-1</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++) &#123;</span><br><span class="line">            a[i]=q.front();</span><br><span class="line">            q.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x=<span class="number">-1</span>,y=<span class="number">-1</span>,type=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>&amp;&amp;x==<span class="number">-1</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;<span class="number">3</span>&amp;&amp;x==<span class="number">-1</span>;j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">sqrt</span>((vec[a[i]]+vec[a[j]]).dot(vec[a[i]]+vec[a[j]]))&lt;R+eps) &#123;</span><br><span class="line">                    x=a[i],y=a[j];</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">sqrt</span>((vec[a[i]]-vec[a[j]]).dot(vec[a[i]]-vec[a[j]]))&lt;R+eps) &#123;</span><br><span class="line">                    x=a[i],y=a[j],type=<span class="number">-1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[i]!=x&amp;&amp;a[i]!=y) q.push(a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        nd[tot]=&#123;x,y,type&#125;;</span><br><span class="line">        vec[tot]=vec[x]+(vec[y]*type);</span><br><span class="line">        q.push(tot++);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (q.size()&lt;<span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"1\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> x=q.front();q.pop();</span><br><span class="line">    <span class="keyword">int</span> y=q.front();q.pop();</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">sqrt</span>((vec[x]+vec[y]).dot(vec[x]+vec[y]))&lt;<span class="built_in">sqrt</span>(<span class="number">2</span>)*R+eps) &#123;</span><br><span class="line">        nd[tot++]=&#123;x,y,<span class="number">1</span>&#125;;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        nd[tot++]=&#123;x,y,<span class="number">-1</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(tot<span class="number">-1</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) <span class="built_in">printf</span>(<span class="string">"%d "</span>,ans[i]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/07/cf-995C/" data-id="cjjbiv7410001cejg8x46nmcn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-subsets-property-merge" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/07/07/subsets-property-merge/" class="article-date">
@@ -97,7 +143,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/subsets-property-merge/" data-id="cjjate5280009lxjghad0talq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/subsets-property-merge/" data-id="cjjbiv74q000jcejgpwatbq73" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -159,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjjate52a000alxjgeomo25k8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjjbiv74h000acejgity027o8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
@@ -205,7 +251,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjjate52e000elxjg0enu01lm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjjbiv74k000ecejgi28si3ih" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li></ul>
@@ -255,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjjate5220005lxjgraphobrm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjjbiv7490005cejg83qesn6o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
@@ -302,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjjate5200004lxjgkuwbnkbz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjjbiv74b0006cejge9tkqugr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
@@ -363,7 +409,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjjate530001klxjgvkk4bnnj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjjbiv74o000gcejg2jquit25" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -410,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjjate51t0001lxjgn0czmjro" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjjbiv7480004cejgepsf9bhi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -457,7 +503,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjjate51o0000lxjgbajrw4sv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjjbiv73q0000cejgukyzetcq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -497,7 +543,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjjate5240006lxjg0c49t8zm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjjbiv74f0009cejgl0ygpv61" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -529,7 +575,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -539,7 +585,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 16.67px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 13.33px;">dynamic programming</a> <a href="/tags/geometry/" style="font-size: 10px;">geometry</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 10px;">max-flow</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 10px;">max-flow</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -561,6 +607,10 @@
       <ul>
         
           <li>
+            <a href="/2018/07/07/cf-995C/">Codeforces 995C Leaving the Bar</a>
+          </li>
+        
+          <li>
             <a href="/2018/07/07/subsets-property-merge/">Subsets Property Merge</a>
           </li>
         
@@ -574,10 +624,6 @@
         
           <li>
             <a href="/2018/06/10/cf-984E/">Codeforces 984E Elevator</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
           </li>
         
       </ul>
@@ -633,6 +679,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script></body>
 </html>
