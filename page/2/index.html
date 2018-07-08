@@ -5,13 +5,13 @@
   
 
   
-  <title>Tag: maths | Cao Li&#39;s blog</title>
+  <title>Cao Li&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Some study by interest, mainly on competitive programming, algorithm and developing.">
 <meta name="keywords" content="Competitive programming, Algorithm, Software developing">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Cao Li&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/tags/maths/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Cao Li&#39;s blog">
 <meta property="og:description" content="Some study by interest, mainly on competitive programming, algorithm and developing.">
 <meta property="og:locale" content="default">
@@ -66,38 +66,52 @@
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/10/10/cf-869C/" class="archive-article-date">
-  <time datetime="2017-10-10T06:59:00.000Z" itemprop="datePublished">Oct 10</time>
+    <article id="post-cmake-link-issue" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/27/cmake-link-issue/" class="article-date">
+  <time datetime="2017-09-27T07:15:27.000Z" itemprop="datePublished">2017-09-27</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/10/cf-869C/">Codeforces 869C The Intriguing Obsession</a>
+      <a class="article-title" href="/2017/09/27/cmake-link-issue/">CMake link issue</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>When we use cmake to compile our program and use <code>TARGET_LINK_LIBRARIES</code> to link libraries we need, we have to pay attention to the order these libraries are specified.</p>
+<p>In the following case, our program depends on the muduo_base library and muduo_base library depends on pthread, then we have to ensure pthread is after muduo_base:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> <span class="variable">$&#123;MUDUO_NET_LIBRARY&#125;</span> <span class="variable">$&#123;MUDUO_BASE_LIBRARY&#125;</span> pthread)</span><br></pre></td></tr></table></figure><br>Otherwise, we would get a link error if we specify like this:<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(<span class="variable">$&#123;PROJECT_NAME&#125;</span> pthread <span class="variable">$&#123;MUDUO_NET_LIBRARY&#125;</span> <span class="variable">$&#123;MUDUO_BASE_LIBRARY&#125;</span>)</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjjc5h9bf000ahijgxiopm3v8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
+
+    </footer>
   </div>
+  
 </article>
-  
-  
-    </div></section>
+
+
   
 
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 </section>
         
