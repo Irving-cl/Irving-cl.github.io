@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+
+  
+  <title>Minimum Cut Problems | Cao Li&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="I think these problems are difficult because they are obscure. I mean, we can hardly recognize them and adopt a minimum-cut solution, at least for me. Maybe solving a great many of these problems woul">
+<meta name="keywords" content="algorithm,max-flow,minimum-cut">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Minimum Cut Problems">
+<meta property="og:url" content="http://yoursite.com/2018/07/15/minimum-cut-problems/index.html">
+<meta property="og:site_name" content="Cao Li&#39;s blog">
+<meta property="og:description" content="I think these problems are difficult because they are obscure. I mean, we can hardly recognize them and adopt a minimum-cut solution, at least for me. Maybe solving a great many of these problems woul">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-15T05:01:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Minimum Cut Problems">
+<meta name="twitter:description" content="I think these problems are difficult because they are obscure. I mean, we can hardly recognize them and adopt a minimum-cut solution, at least for me. Maybe solving a great many of these problems woul">
+  
+    <link rel="alternate" href="/atom.xml" title="Cao Li&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Cao Li&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-minimum-cut-problems" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/15/minimum-cut-problems/" class="article-date">
+  <time datetime="2018-07-15T03:25:19.000Z" itemprop="datePublished">2018-07-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Minimum Cut Problems
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I think these problems are difficult because they are obscure. I mean, we can hardly recognize them and adopt a minimum-cut solution, at least for me. Maybe solving a great many of these problems would help. One characteristic of these problems is that we need to <strong>divide some elements into two sets(source and sink) to get some optimal result</strong>.<br>Let’s see some problems:</p>
+<h3 id="POJ-3469-Dual-Core-CPU"><a href="#POJ-3469-Dual-Core-CPU" class="headerlink" title="POJ 3469 - Dual Core CPU"></a>POJ 3469 - Dual Core CPU</h3><p>Problem: <a href="http://poj.org/problem?id=3469" target="_blank" rel="noopener">POJ 3469 - Dual Core CPU</a><br>There are 2 cores A, B and N tasks to be processed. The time cost for the i-th task on A, B are $a_{i}$, $b_{i}$ respectively. And for some tasks, when processed on two different cores, will exert an extra cost. For each task, decide which core should it be processed by to make the total cost minimized.<br>In this problem, we divide the tasks into two sets(processed on A, and on B). So we try to reduce it to a minimum-cut problem. Apparently, the minimized cost corresponds to the minimum cut.<br>For each task <code>i</code>, we add an edge from <code>source</code> to <code>i</code> whose weight equals to $b_{i}$. Then if this edge is among the cut set, task <code>i</code> is processed on core B. For the same reason, we add an edge from <code>i</code> to <code>sink</code> whose weight equals to $a_{i}$. Finally, for those tasks who effect each other, say <code>i</code> and <code>j</code>, we add two edges between <code>i</code> and <code>j</code>(in two directions), whose weight equals to the extra cost. Now the minumum cut of the graph is equal to the minimized cost we want to get.<br>Pseudo code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;a,&amp;b);</span><br><span class="line">        add_edge(<span class="number">0</span>,i,b);</span><br><span class="line">        add_edge(i,<span class="number">0</span>,<span class="number">0</span>);    <span class="comment">// reverse edge</span></span><br><span class="line">        add_edge(i,n+<span class="number">1</span>,a);</span><br><span class="line">        add_edge(n+<span class="number">1</span>,i,<span class="number">0</span>);  <span class="comment">// reverse edge</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=m;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>,&amp;a,&amp;b,&amp;w);    <span class="comment">// extra cost</span></span><br><span class="line">        add_edge(a,b,w);</span><br><span class="line">        add_edge(b,a,<span class="number">0</span>);    <span class="comment">// reverse edge</span></span><br><span class="line">        add_edge(b,a,w);</span><br><span class="line">        add_edge(a,b,<span class="number">0</span>);    <span class="comment">// reverse edge</span></span><br><span class="line">    &#125;</span><br><span class="line">    ll mx_flow=max_flow();  <span class="comment">// get the answer</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Code-Jam-World-Finals-2009-Problem-D-Wi-fi-Towers"><a href="#Code-Jam-World-Finals-2009-Problem-D-Wi-fi-Towers" class="headerlink" title="Code Jam - World Finals 2009 - Problem D. Wi-fi Towers"></a>Code Jam - World Finals 2009 - Problem D. Wi-fi Towers</h3><p>Problem: <a href="https://code.google.com/codejam/contest/311101/dashboard#s=p3" target="_blank" rel="noopener">Wi-fi Towers</a><br>Given N wi-fi towers, the i-th is located at $x_{i}$, $y_{i}$, and has a range $r_{i}$. Now we want to upgrade the protocol of them. The score of upgrading the i-th tower is $s_{i}$. When the i-th tower is upgraded, all towers within its range have to be upgraded as well. Decide which towers to be upgraded to make the total score maximized.<br>Wow, world final problem!<br>It’s quite difficult to associate this with minimum-cut. The two sets are <strong>towers to be upgraded</strong> and <strong>towers not to be upgraded</strong>.<br>We want maximum score, so we calculate the minimum <strong>lost</strong>. If $s_{i}$ is negative, the absolute value of it is a lost. We add an edge from <code>source</code> to <code>i</code> whose weight is $|s_{i}|$. If $s_{i}$ is positive, we can imagine that tower i has already been upgraded at first, and “upgrading” it to the origin exerts a lost. We add an edge from <code>i</code> to <code>sink</code> whose weight is $|s_{i}|$. We need to add the positive values to the answer, of course.<br>Then consider the constraints. If <code>j</code> has to be upgraded if <code>i</code> is upgraded, we add an edge from j to i, whose weight is $\infty$. As a result, if we upgrade <code>i</code> without upgrading <code>j</code>, the cut value will be infinity.<br>Now we reduce the minimized lost from the answer, and we get the maximum score.<br>Pseudo code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> src=<span class="number">0</span>,sink=n+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> ans=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s[i]&lt;<span class="number">0</span>) &#123;</span><br><span class="line">            add_edge(<span class="number">0</span>,i,-s[i]);</span><br><span class="line">            add_edge(i,<span class="number">0</span>,<span class="number">0</span>);    <span class="comment">// reverse edge</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            add_edge(i,n+<span class="number">1</span>,s[i]);</span><br><span class="line">            add_edge(n+<span class="number">1</span>,i,<span class="number">0</span>);  <span class="comment">// reverse edge</span></span><br><span class="line">            ans+=s[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=n;j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i==j) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span> (sqr(x[i]-x[j])+sqr(y[i]-y[j])&lt;=sqr(r[i])) &#123;    <span class="comment">// within the range</span></span><br><span class="line">                add_edge(j,i,INF);</span><br><span class="line">                add_edge(i,j,<span class="number">0</span>);    <span class="comment">// reverse edge</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mx_flow=max_flow();</span><br><span class="line">    ans-=mx_flow;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Hope I will recognize the minimum-cut problem when I meet one next time…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/15/minimum-cut-problems/" data-id="cjjmatzt5000agijghavziv0o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/08/cf-992E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Codeforces 992E - Nastya and King-Shamans</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/competitive-programming/">competitive programming</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 12.5px;">max-flow</a> <a href="/tags/minimum-cut/" style="font-size: 10px;">minimum-cut</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/segment-tree/" style="font-size: 10px;">segment tree</a> <a href="/tags/square-decomposition/" style="font-size: 10px;">square decomposition</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/07/15/minimum-cut-problems/">Minimum Cut Problems</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/08/cf-992E/">Codeforces 992E - Nastya and King-Shamans</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/cf-995C/">Codeforces 995C Leaving the Bar</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/07/subsets-property-merge/">Subsets Property Merge</a>
+          </li>
+        
+          <li>
+            <a href="/2018/07/02/geometry-basics/">Geometry Basics</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Cao Li<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script></body>
+</html>
