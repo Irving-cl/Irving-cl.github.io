@@ -66,6 +66,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-fractional-programming-and-dinkelbach-theorem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/14/fractional-programming-and-dinkelbach-theorem/" class="article-date">
+  <time datetime="2018-10-14T02:21:56.000Z" itemprop="datePublished">2018-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/14/fractional-programming-and-dinkelbach-theorem/">Fractional programming &amp; Dinkelbach theorem</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Let’s first consider such a problem: Given n objects, the i-th of them has value $v_i$ and has weight $w_i$. Now we want to pick some of them, say, the set of objects we pick is $S$. And we want to make $ f(S) = \frac{\sum_{i \in S} v_i}{\sum_{i \in S} w_i} $ maximized. How do we calculate that?<br>This is actually a fundamental example of <strong>fractional programming</strong>. Here is normal form of <strong>fractional programming</strong>:<br>$$ Minimize \ \ \lambda = f(x) = \frac{a(x)}{b(x)} \ (x \in S) $$<br>$x$ here is just an input among all the inputs in the whole space $S$, it can be anything, perhaps not only a simple variable. We can solve the problem by passing all $x$ from $S$ and get the result. But the size of $S$ could be usually very large or even infinite. So such solution is impractical. </p>
+<p>Then we calls for the <strong>Dinkelbach</strong> theorem. Now let’s introduce a new function:<br>$$ g(\lambda) = \min_{x \in S}{ (a(x) - \lambda b(x)) } $$<br>Suppose $\lambda^{*}$ is the optimized value. The <strong>Dinkelbach algorithm</strong> says that:</p>
+<ol>
+<li>$ g(\lambda) = 0, \lambda = \lambda^{*} $</li>
+<li>$ g(\lambda) &lt; 0, \lambda &gt; \lambda^{*} $</li>
+<li>$ g(\lambda) &gt; 0, \lambda &lt; \lambda^{*} $ </li>
+</ol>
+<p>I won’t give detailed proof here, it’s actually easy to understand. $ g(\lambda) &lt; 0 $ means that there exists some $x$ that satisfy $ a(x) - \lambda b(x) = 0$. So we can make $\lambda$ smaller. And $ g(\lambda) &gt; 0 $ means that there is no such $x$, so this $\lambda$ is too small.<br>With this, we can get the answer by binary search. We can fix a $\lambda$ and calculate the value of $g(\lambda)$ and finally approach the answer. <strong>Dinkelbach</strong> also works when we want to get the maximized value instead of the minimized one. But this time the function changes in this way:<br>$$ g(\lambda) = \max_{ x \in S }{(a(x) - \lambda b(x))} $$</p>
+<p>Let’s solve a sample problem of <strong>fractional programming</strong>: <a href="http://poj.org/problem?id=3111" target="_blank" rel="noopener">poj 3111 - K Best</a><br>My code:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> N=<span class="number">100010</span>;</span><br><span class="line"><span class="keyword">int</span> n,k;</span><br><span class="line"><span class="keyword">int</span> v[N],w[N];</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    db val;</span><br><span class="line">    <span class="keyword">int</span> idx;</span><br><span class="line">    node(db a,<span class="keyword">int</span> b):val(a),idx(b)&#123;&#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> node&amp; rhs) <span class="keyword">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> val&gt;rhs.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;node&gt; vec;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(db val)</span> </span>&#123;</span><br><span class="line">    vec.clear();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        vec.pb(node(v[i]-val*w[i],i));</span><br><span class="line">    &#125;</span><br><span class="line">    sort(vec.begin(),vec.end());</span><br><span class="line">    db tot=<span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;k;i++) tot+=vec[i].val;</span><br><span class="line">    <span class="keyword">return</span> tot&gt;<span class="number">0.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,&amp;n,&amp;k);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>,v+i,w+i);</span><br><span class="line">    &#125;</span><br><span class="line">    db lo=<span class="number">0.0</span>,hi=<span class="number">1e11</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">50</span>;i++) &#123;</span><br><span class="line">        db mid=(lo+hi)*<span class="number">0.5</span>;</span><br><span class="line">        <span class="keyword">if</span> (check(mid)) lo=mid;</span><br><span class="line">        <span class="keyword">else</span> hi=mid;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;k;i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d "</span>,vec[i].idx);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>This is almost an direct application of <strong>Dinkelbach</strong>. When we fix $\lambda$, we can get $g(\lambda)$ by sorting all items of $ v_i - \lambda w_i $, and sum k biggest items up. And finally we got the answer. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/14/fractional-programming-and-dinkelbach-theorem/" data-id="cjn892ius0006k9ts1efalmws" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binary-search/">binary search</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dinkelbach-theorem/">dinkelbach theorem</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fractional-programming/">fractional programming</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-connectivity-and-tarjan-algorithm" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/09/27/connectivity-and-tarjan-algorithm/" class="article-date">
@@ -108,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/27/connectivity-and-tarjan-algorithm/" data-id="cjmkpj1ro0005j8tsma43mx5u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/09/27/connectivity-and-tarjan-algorithm/" data-id="cjn892iv3000jk9tsofpczh0z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/connectivity/">connectivity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dfs/">dfs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/graph-theory/">graph theory</a></li></ul>
@@ -154,7 +201,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/15/minimum-cut-problems/" data-id="cjmkpj1s7000mj8tsa422tdus" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/15/minimum-cut-problems/" data-id="cjn892ivt002dk9ts2li33snf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li></ul>
@@ -199,7 +246,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/08/cf-992E/" data-id="cjmkpj1rt0009j8tsf58vqhtq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/08/cf-992E/" data-id="cjn892iuv0009k9tsatsu7ad8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li></ul>
@@ -245,7 +292,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/cf-995C/" data-id="cjmkpj1rv000aj8tsehw68qam" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/cf-995C/" data-id="cjn892iux000ak9tsg9jtmwt1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
@@ -288,7 +335,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/07/subsets-property-merge/" data-id="cjmkpj1sb000tj8ts6no8qgab" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/07/subsets-property-merge/" data-id="cjn892ivv002gk9tsn1pj1z2l" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -350,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjmkpj1s1000gj8tsgtji3z29" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/07/02/geometry-basics/" data-id="cjn892iv1000gk9ts0vqi41an" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/geometry/">geometry</a></li></ul>
@@ -396,7 +443,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjmkpj1s5000jj8tsqfh8nq1w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/30/max-flow-algorithm/" data-id="cjn892iv6000mk9ts8k60kk1g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/max-flow/">max-flow</a></li></ul>
@@ -446,7 +493,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjmkpj1rq0006j8tsyvsupzns" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/06/10/cf-984E/" data-id="cjn892iuq0005k9tszaugjfqc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
@@ -493,71 +540,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjmkpj1rm0004j8tsjizv5z0d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjn892iup0004k9tsflunl0wa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-notes-on-muduo-timer" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/07/notes-on-muduo-timer/" class="article-date">
-  <time datetime="2017-11-07T03:41:55.000Z" itemprop="datePublished">2017-11-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/07/notes-on-muduo-timer/">Notes on Muduo Timer</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Recently I am studying <a href="https://github.com/chenshuo/muduo" target="_blank" rel="noopener">Muduo</a>, a net library written by ChenShuo.<br>And I think the timer system of it is worth learning, so I did some notes on it in this article.</p>
-<h2 id="What-is-a-timer"><a href="#What-is-a-timer" class="headerlink" title="What is a timer?"></a>What is a timer?</h2><p><em>A timer allows us to do something at a specific time later.</em>  This is not quoted from someone’s words. This is just my own understanding. Say, now we want to run a function, instead of running it immediately, we want to run it after 2 seconds. And a timer enables us to do something like that.</p>
-<h2 id="How-do-we-use-timer-in-Muduo"><a href="#How-do-we-use-timer-in-Muduo" class="headerlink" title="How do we use timer in Muduo?"></a>How do we use timer in Muduo?</h2><p>At the very beginning, we have to know a very important idea about Muduo: <strong>One loop per thread</strong>, which is also emphasized by the author. The core class of Muduo is <code>EventLoop</code>. Each <code>EventLoop</code> is bind to a thread and will loop forever to run the thread until we call the <code>quit()</code> method of it. Every thing runs in one of the EventLoops in Muduo. So, if we want to run a function in 2 seconds, we run the function in one of the EventLoops. Apparently, we run our functions in some thread.<br>Muduo provides us with three methods to add a timer and one to cancel a timer:<br><figure class="highlight cpp"><figcaption><span>interfaces</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback at 'time'.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runAt</span><span class="params">(<span class="keyword">const</span> Timestamp&amp; time, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback after @c delay seconds.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runAfter</span><span class="params">(<span class="keyword">double</span> delay, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Runs callback every @c interval seconds.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function">TimerId <span class="title">runEvery</span><span class="params">(<span class="keyword">double</span> interval, <span class="keyword">const</span> TimerCallback&amp; cb)</span></span>;</span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// Cancels the timer.</span></span><br><span class="line"><span class="comment">/// Safe to call from other threads.</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cancel</span><span class="params">(TimerId timerId)</span></span>;</span><br></pre></td></tr></table></figure><br>It would be unnessary to explain what does every above method do. However, I should still explain something else:</p>
-<ul>
-<li>A <code>Timer</code> is actually an expiration time with a callback function. The callback function would be called when it expired. </li>
-<li>A <code>TimerId</code> is an identification of a timer so that we can cancel a timer.</li>
-<li><code>Timestamp</code> is actually micro seconds since epoch.</li>
-<li><code>TimerCallback</code> is a function object, which we want to run in the future.</li>
-</ul>
-<h2 id="How-does-these-timer-function-work"><a href="#How-does-these-timer-function-work" class="headerlink" title="How does these timer function work?"></a>How does these timer function work?</h2><p>Now we come to the critical and interesting part, let’s try to figure out how our functions are called when their time expired. In this section, we will take a look at the whole process, from the moment a timer was added to the moment its callback was called. Firstly, I need to introduce the core class of the timer system: <code>TimerQueue</code>. It is invisible to the clients.<br>The private members of it is as follow:<br><figure class="highlight cpp"><figcaption><span>members</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// <span class="doctag">FIXME:</span> use unique_ptr&lt;Timer&gt; instead of raw pointers.</span></span><br><span class="line"><span class="comment">// This requires heterogeneous comparison lookup (N3465) from C++14</span></span><br><span class="line"><span class="comment">// so that we can find an T* in a set&lt;unique_ptr&lt;T&gt;&gt;.</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::pair&lt;Timestamp, Timer*&gt; Entry;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">set</span>&lt;Entry&gt; TimerList;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::pair&lt;Timer*, <span class="keyword">int64_t</span>&gt; ActiveTimer;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">set</span>&lt;ActiveTimer&gt; ActiveTimerSet;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addTimerInLoop</span><span class="params">(Timer* timer)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cancelInLoop</span><span class="params">(TimerId timerId)</span></span>;</span><br><span class="line"><span class="comment">// called when timerfd alarms</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handleRead</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// move out all expired timers</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Entry&gt; getExpired(Timestamp now);</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Entry&gt;&amp; expired, Timestamp now)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">insert</span><span class="params">(Timer* timer)</span></span>;</span><br><span class="line"></span><br><span class="line">EventLoop* loop_;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> timerfd_;</span><br><span class="line">Channel timerfdChannel_;</span><br><span class="line"><span class="comment">// Timer list sorted by expiration</span></span><br><span class="line">TimerList timers_;</span><br><span class="line"></span><br><span class="line"><span class="comment">// for cancel()</span></span><br><span class="line">ActiveTimerSet activeTimers_;</span><br><span class="line"><span class="keyword">bool</span> callingExpiredTimers_; <span class="comment">/* atomic */</span></span><br><span class="line">ActiveTimerSet cancelingTimers_;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>I am not going to elaborate every member here. I put the code here because I may refer to some of these members later. Now we see the whole process. Actually, the problem is all about how to make our thread waked up when time is up.</p>
-<h4 id="How-to-do-that"><a href="#How-to-do-that" class="headerlink" title="How to do that?"></a>How to do that?</h4><p>The way Muduo use to do such thing is quite different from what I once did. I once used two stupid methods, <code>sleep</code> and <code>busy loop and judge</code>. They are bad as far as accuracy is concerned. Besides, they are quite ‘low’ and ‘unprofessional’, right? Students may do that. But we need to be  professional. Muduo uses <code>timerfd</code> with <code>poll</code>. When I refer to <code>poll</code>, I mean <code>select</code>, <code>poll</code>, <code>epoll</code>. They are provided by linux system. If you are not clear about them, man them on a linux system or search the internet. I assumed you know the basic things about <code>poll</code> here.<br>However, <code>timerfd</code> is something new to me. A <code>timerfd</code> is a special file descriptor which will become readable when the time we set expires. It is done by the linux system. Wow, wonderful! This enables us to take an expiration as the same thing with an I/O event. And we can detect these events with <code>poll</code>.</p>
-<h4 id="How-to-add-a-Timer"><a href="#How-to-add-a-Timer" class="headerlink" title="How to add a Timer?"></a>How to add a Timer?</h4><ol>
-<li>At the very beginning, we create a timerfd by calling <code>timerfd_create</code> of linux. This is done only once. But we may set the timerfd many times later. We may have a lot of timers, and we want to be notified when the earliest one of them expired.</li>
-<li>Insert the timer into the data structure we use to store them, which is <code>timers_</code> here. As you can see, there is another member <code>activeTimers_</code>. Unfortunately I don’t understand what is it for. But it doesn’t matter. Notice the definition of <code>TimerList</code> and <code>Entry</code>. <code>TimerList</code> is a set of <code>Entry</code>. An <code>std::set</code> is an ordered container implemented by RBTree. We store entries in it so that they can be sorted by their expiration time, which is represented by a <code>Timestamp</code>. Considering different timers may have the same timestamp, we make pair a timestamp with a pointer of the timer. This ensures us no collisions between timers.</li>
-<li>Reset the <code>timerfd</code> if necessary. This should be done when the latest inserted timer would expire earliest. We do this by calling linux function <code>timerfd_settime</code>.  </li>
-</ol>
-<h4 id="How-to-call-the-callbacks-when-they-expired"><a href="#How-to-call-the-callbacks-when-they-expired" class="headerlink" title="How to call the callbacks when they expired?"></a>How to call the callbacks when they expired?</h4><p>As I mentioned above, a timerfd is treated as a normal fd. And we use <code>poll</code> function to detect that. By the way, let’s take a look at Muduo’s thread model. Muduo is of the <code>Reactor</code> Pattern.<br>Every single loop of <code>EventLoop</code> looks like this:<br><img src="https://raw.githubusercontent.com/Irving-cl/blog_assets/master/notes_on_muduo_timer/muduo_reactor.png" alt="img"></p>
-<ol>
-<li>At first, a poller will poll all the fds and update the channels. A channel can be seen as a bridge between low-level I/O and high-level callbacks; Notice that there is a <code>timerfdChannel_</code> in TimerQueue’s members. Once the time we set expired, the <code>timerfdChannel_</code> will be updated.</li>
-<li>After that, <code>timerfdChannel_</code> found that the fd it took charge became readable, it call its handleRead function.</li>
-<li>In its handleRead function, it will remove all the expired timers and run their callbacks. Of course, we should also read the timerfd and reset it.   </li>
-</ol>
-<p>Now I think we have a general idea about how muduo timer works. The core of the implementation is <code>timerfd</code>, <code>poll</code> and <code>Reactor</code> pattern. Thanks for reading!</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjmkpj1s9000qj8tsrixwssxh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
 
     </footer>
   </div>
@@ -591,7 +577,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/connectivity/">connectivity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/">dfs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph-theory/">graph theory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/binary-search/">binary search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/connectivity/">connectivity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/">dfs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dinkelbach-theorem/">dinkelbach theorem</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fractional-programming/">fractional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph-theory/">graph theory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -601,7 +587,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/connectivity/" style="font-size: 10px;">connectivity</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dfs/" style="font-size: 10px;">dfs</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/graph-theory/" style="font-size: 10px;">graph theory</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 12.5px;">max-flow</a> <a href="/tags/minimum-cut/" style="font-size: 10px;">minimum-cut</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/segment-tree/" style="font-size: 10px;">segment tree</a> <a href="/tags/square-decomposition/" style="font-size: 10px;">square decomposition</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/binary-search/" style="font-size: 10px;">binary search</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/connectivity/" style="font-size: 10px;">connectivity</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dfs/" style="font-size: 10px;">dfs</a> <a href="/tags/dinkelbach-theorem/" style="font-size: 10px;">dinkelbach theorem</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/fractional-programming/" style="font-size: 10px;">fractional programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/graph-theory/" style="font-size: 10px;">graph theory</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 12.5px;">max-flow</a> <a href="/tags/minimum-cut/" style="font-size: 10px;">minimum-cut</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/segment-tree/" style="font-size: 10px;">segment tree</a> <a href="/tags/square-decomposition/" style="font-size: 10px;">square decomposition</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -610,7 +596,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -621,6 +607,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/10/14/fractional-programming-and-dinkelbach-theorem/">Fractional programming &amp; Dinkelbach theorem</a>
+          </li>
         
           <li>
             <a href="/2018/09/27/connectivity-and-tarjan-algorithm/">Connectivity &amp; Tarjan Algorithm</a>
@@ -636,10 +626,6 @@
         
           <li>
             <a href="/2018/07/07/cf-995C/">Codeforces 995C Leaving the Bar</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/07/subsets-property-merge/">Subsets Property Merge</a>
           </li>
         
       </ul>
