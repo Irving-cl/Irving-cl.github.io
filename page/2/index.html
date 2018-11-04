@@ -66,6 +66,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cf-894B" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/25/cf-894B/" class="article-date">
+  <time datetime="2017-11-25T08:49:59.000Z" itemprop="datePublished">2017-11-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/competitive-programming/">competitive programming</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/25/cf-894B/">Codeforces 894B Ralph And His Magic Field</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Well, I didn’t solve it myself though it’s only B problem in Div2… Fine, this sometimes happens, never mind. Just practice more.  </p>
+<p>The problem is, how many different ways can we put integers in a <em>n \</em> m* block so that the products of each row and each column is 1 or -1. </p>
+<p>Let’s see how to solve it. We can easily figure out that only 1 or -1 can be put into the block. Further, another important conclusion is that <strong>when k is -1, the answer is 0 if n and m have different parity</strong>. Why is that? This is not obvious for me. If we have <code>n</code> be odd and <code>m</code> be even, then we have an even number of -1 in total since we have an even number of columns. However, we have an odd number of rows, and in each row there exists an odd number of -1. So the total number of -1 cannot be even. That’s impossible.  For the rest cases, we consider the (n-1)*(m-1) subblock. We can fill either 1 or -1 into any cell. And then the rest cells are determined.<br>The answer is:<br>$$<br>2^{(n-1)+(m-1)}<br>$$</p>
+<p>With quick power, we can solve it easily.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pb push_back</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ull unsigned ll</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> db double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MOD 1000000007</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PII pair<span class="meta-string">&lt;int, int&gt;</span></span></span><br><span class="line"></span><br><span class="line">ll n,m,k;</span><br><span class="line"></span><br><span class="line"><span class="function">ll <span class="title">qp</span><span class="params">(ll temp,ll x)</span> </span>&#123;</span><br><span class="line">    ll ret=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (x&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (x&amp;<span class="number">1</span>) ret=(ret*temp)%MOD;</span><br><span class="line">        temp=(temp*temp)%MOD;</span><br><span class="line">        x&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lld%lld%lld"</span>,&amp;n,&amp;m,&amp;k);</span><br><span class="line">    <span class="keyword">if</span> (k==<span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((n%<span class="number">2</span>)+(m%<span class="number">2</span>)==<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"0\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ll ans=qp(qp(<span class="number">2</span>,n<span class="number">-1</span>),m<span class="number">-1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,ans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>I’m recently studying using <strong>ocaml</strong>, which is a functional language.<br>So let’s rewrite the solution with <strong>ocaml</strong>.<br><figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="type">Scanf</span></span><br><span class="line"><span class="keyword">open</span> <span class="type">Printf</span></span><br><span class="line"><span class="keyword">open</span> <span class="type">Int64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> md = <span class="number">1000000007L</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f n m k =</span><br><span class="line">  <span class="keyword">if</span> k = -<span class="number">1L</span> &amp;&amp; <span class="type">Int64</span>.rem (<span class="type">Int64</span>.add m n) <span class="number">2L</span> = <span class="number">1L</span> <span class="keyword">then</span> <span class="number">0L</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">let</span> <span class="keyword">rec</span> g x y =</span><br><span class="line">      <span class="keyword">if</span> y = <span class="number">0L</span> <span class="keyword">then</span> <span class="number">1L</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> y = <span class="number">1L</span> <span class="keyword">then</span> x</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">let</span> tmp = g x (<span class="type">Int64</span>.div y <span class="number">2L</span>) <span class="keyword">in</span></span><br><span class="line">          <span class="keyword">if</span> <span class="type">Int64</span>.rem y <span class="number">2L</span> = <span class="number">0L</span> <span class="keyword">then</span> <span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul tmp tmp) md </span><br><span class="line">          <span class="keyword">else</span> <span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul (<span class="type">Int64</span>.rem (<span class="type">Int64</span>.mul tmp tmp) md) x) md <span class="keyword">in</span></span><br><span class="line">    g (g <span class="number">2L</span> (<span class="type">Int64</span>.sub n <span class="number">1L</span>)) (<span class="type">Int64</span>.sub m <span class="number">1L</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="literal">()</span> =</span><br><span class="line">  <span class="keyword">let</span> ans = bscanf <span class="type">Scanning</span>.stdin <span class="string">"%Ld %Ld %Ld"</span> f <span class="keyword">in</span></span><br><span class="line">    printf <span class="string">"%Ld\n"</span> ans</span><br></pre></td></tr></table></figure><br>Though it may be very difficult to use it in a contest temporarily, I have a great interest in this language.<br>The problem: <a href="http://codeforces.com/problemset/problem/894/B" target="_blank" rel="noopener">Codeforces 894B Ralph And His Magic Field</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/25/cf-894B/" data-id="cjo242g8u0004g8tsdl9l2f30" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-notes-on-muduo-timer" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/11/07/notes-on-muduo-timer/" class="article-date">
@@ -115,7 +162,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjn892ivu002ek9tspfspcplj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/07/notes-on-muduo-timer/" data-id="cjo242g9l000wg8ts8uxlu6qu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li></ul>
@@ -162,7 +209,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjn892iul0001k9tsyy58fnf9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/10/cf-869C/" data-id="cjo242g8q0001g8tsknru4jj6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maths/">maths</a></li></ul>
@@ -209,7 +256,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjn892iug0000k9ts1rgnftxj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/28/cf-864E/" data-id="cjo242g8l0000g8ts00j5qj5y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li></ul>
@@ -249,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjn892iuz000ek9tsk4760r6i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/27/cmake-link-issue/" data-id="cjo242g91000ag8tscehd9um9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/">cmake</a></li></ul>
@@ -286,7 +333,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/binary-search/">binary search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/connectivity/">connectivity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/">dfs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dinkelbach-theorem/">dinkelbach theorem</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fractional-programming/">fractional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph-theory/">graph theory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad-hoc/">ad-hoc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/binary-search/">binary search</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bipartite-graph/">bipartite graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/brute-force/">brute force</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codeforces/">codeforces</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combinatorics/">combinatorics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/connectivity/">connectivity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-structure/">data structure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dfs/">dfs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dinkelbach-theorem/">dinkelbach theorem</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dynamic-programming/">dynamic programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fractional-programming/">fractional programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/geometry/">geometry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph-theory/">graph theory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maths/">maths</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/max-flow/">max-flow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/minimum-cut/">minimum-cut</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/segment-tree/">segment tree</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/square-decomposition/">square decomposition</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/state-compression/">state compression</a></li></ul>
     </div>
   </div>
 
@@ -296,7 +343,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/binary-search/" style="font-size: 10px;">binary search</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/connectivity/" style="font-size: 10px;">connectivity</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dfs/" style="font-size: 10px;">dfs</a> <a href="/tags/dinkelbach-theorem/" style="font-size: 10px;">dinkelbach theorem</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/fractional-programming/" style="font-size: 10px;">fractional programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/graph-theory/" style="font-size: 10px;">graph theory</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 12.5px;">max-flow</a> <a href="/tags/minimum-cut/" style="font-size: 10px;">minimum-cut</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/segment-tree/" style="font-size: 10px;">segment tree</a> <a href="/tags/square-decomposition/" style="font-size: 10px;">square decomposition</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
+      <a href="/tags/ad-hoc/" style="font-size: 10px;">ad-hoc</a> <a href="/tags/algorithm/" style="font-size: 20px;">algorithm</a> <a href="/tags/binary-search/" style="font-size: 10px;">binary search</a> <a href="/tags/bipartite-graph/" style="font-size: 10px;">bipartite graph</a> <a href="/tags/brute-force/" style="font-size: 10px;">brute force</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/codeforces/" style="font-size: 17.5px;">codeforces</a> <a href="/tags/combinatorics/" style="font-size: 10px;">combinatorics</a> <a href="/tags/connectivity/" style="font-size: 10px;">connectivity</a> <a href="/tags/cpp/" style="font-size: 10px;">cpp</a> <a href="/tags/data-structure/" style="font-size: 10px;">data structure</a> <a href="/tags/dfs/" style="font-size: 10px;">dfs</a> <a href="/tags/dinkelbach-theorem/" style="font-size: 10px;">dinkelbach theorem</a> <a href="/tags/dynamic-programming/" style="font-size: 15px;">dynamic programming</a> <a href="/tags/fractional-programming/" style="font-size: 10px;">fractional programming</a> <a href="/tags/geometry/" style="font-size: 12.5px;">geometry</a> <a href="/tags/graph-theory/" style="font-size: 12.5px;">graph theory</a> <a href="/tags/maths/" style="font-size: 10px;">maths</a> <a href="/tags/max-flow/" style="font-size: 12.5px;">max-flow</a> <a href="/tags/minimum-cut/" style="font-size: 10px;">minimum-cut</a> <a href="/tags/net/" style="font-size: 10px;">net</a> <a href="/tags/segment-tree/" style="font-size: 10px;">segment tree</a> <a href="/tags/square-decomposition/" style="font-size: 10px;">square decomposition</a> <a href="/tags/state-compression/" style="font-size: 10px;">state compression</a>
     </div>
   </div>
 
@@ -305,7 +352,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -316,6 +363,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/11/04/something-about-bipartite-graph/">Something About Bipartite Graph</a>
+          </li>
         
           <li>
             <a href="/2018/10/14/fractional-programming-and-dinkelbach-theorem/">Fractional programming &amp; Dinkelbach theorem</a>
@@ -331,10 +382,6 @@
         
           <li>
             <a href="/2018/07/08/cf-992E/">Codeforces 992E - Nastya and King-Shamans</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/07/cf-995C/">Codeforces 995C Leaving the Bar</a>
           </li>
         
       </ul>
@@ -390,6 +437,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script></body>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="/node_modules/live2d-widget/node_modules/live2d-widget/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"pluginRootPath":"node_modules/live2d-widget/","pluginJsPath":"node_modules/live2d-widget/lib/","pluginModelPath":"node_modules/live2d-widget-model-hijiki/assets","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/node_modules/live2d-widget/node_modules/live2d-widget-model-hijiki/hijiki.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2}});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>
